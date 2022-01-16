@@ -1,25 +1,36 @@
+import json
 import boto3
 import os
+from datetime import datetime
+
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 LOCALSTACK_IP = os.environ['LOCALSTACK_IP']
+BUCKET_NAME = os.environ['BUCKET_NAME']
+REGION = os.environ['AWS_REGION']
 
 # localstackのendpointを指定
-
 s3 = boto3.resource(
-    aws_access_key_id='dummy',
-    aws_secret_access_key='dummy',
-    region_name='ap-northeast-1',
     service_name='s3',
-    endpoint_url = f'http://{LOCALSTACK_IP}:4566'
+    endpoint_url = f'http://{LOCALSTACK_IP}:4566',
+    region_name=REGION
 )
 
 def lambda_handler(event, context):
-    bucket = 'test-bucket'
-    key = 'test.txt'
+    datestr = datetime.now().strftime('%Y%m%d-%H%M%S')
+    key = f'test_{datestr}.txt'
+    file_contents = 'Hello! Lambda File!!'
 
-    res = s3.Bucket(bucket).Object(key).get()
-    body = res['Body'].read()
+    s3.Bucket(BUCKET_NAME).put_object(
+        Key=key,
+        Body=file_contents
+    )
+
     return {
         "statusCode": 200,
-        "body": body,
+        "body": json.dumps({
+            "message": 'File created'
+        }),
     }
