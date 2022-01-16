@@ -14,7 +14,7 @@ s3 = boto3.resource(
 )
 
 def lambda_handler(event, context):
-    bucket = 'test-bucket'    # バケット名を指定
+    bucket = 'test-bucket'
     key = 'test.txt'
 
     res = s3.Bucket(bucket).Object(key).get()
