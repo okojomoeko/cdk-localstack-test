@@ -20,5 +20,6 @@ export LOCALSTACK_IP=172.18.0.1
 
 1. root で`npm install`
 2. root で`docker-compose up -d`
-3. infra で`../node_modules/.bin/cdklocal bootstrap --profile=localstack`
-4. infra で`../node_modules/.bin/cdklocal deploy --profile=localstack`
+3. infra で`npm install`
+4. infra で`../node_modules/.bin/cdklocal bootstrap --profile=localstack`
+5. infra で`../node_modules/.bin/cdklocal deploy --profile=localstack`
